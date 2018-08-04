@@ -13,18 +13,24 @@ extern "C" {
 
 //macro
 #define MAX_LEN 0x10000 //65536bit 2KB
-typedef int INT;
-typedef unsigned int u16;
+	typedef int INT;
+	typedef unsigned short u16;
+	typedef std::vector<u16>::iterator itu16;
 
 //class
 
 class Num{
+protected:
+
 private:
-	std::vector<u16> seq;/*科学记数法中的数值*/
+	std::vector<u16> seq;/*科学记数法中的数值*/ 
+	/*
+	big end first.
+	*/
 	INT power /*科学记数法中的位数*/,
 		sigfig /*有效数字的位数,also length*/;
 	bool ispositive; /*for positive*/
-	//u16 * prear;/*最后一位有效数字所在的地址,length-1*/
+	itu16 prear;/*最后一位有效数字所在的地址,length-1*/
 	
 public:
 	static std::vector<u16> tmpseq;
