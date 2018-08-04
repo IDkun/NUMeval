@@ -14,22 +14,13 @@
 Num::Num(){
 	sigfig=1;
 	power=0;
-	prear=seq;
+	// prear=seq;
 	ispositive=true;
 };
 Num::Num(short i):Num(int(i)) {};
 Num::Num(int i):Num(){
 	if(i<0) ispositive=false;
-	prear=tmpseq,power=0,sigfig=1;
-	while(i>1){
-		*prear	=	i%2;
-		power++,sigfig++,prear++;
-		i>>1;
-	}
-	for(BIT *prev = &tmpseq[power],perar=seq;prev!=tmpseq;prev--,prear++){
-		*prear	=	*prev;
-	}
-	assert (prear==seq+sigfig);
+	//assert (prear==seq+sigfig);
 } ;
 Num::Num(float d):Num(double(d)) {};
 Num::Num(double d):Num(){
