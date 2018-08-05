@@ -146,28 +146,28 @@ Num::~Num(){};
 // Num Num::operator * (Num const& _a, Num const& _b);
 // Num Num::operator / (Num const& _a, Num const& _b);
 std::ostream& operator << (std::ostream &_out, Num const &_a){
-	INT i=1;
-	if(!_a.ispositive) _out<<'-';
-	bool all0=true;
-	
-	for(itu16 it=_a.seq.begin();it!=_a.seq.end();++it,++i,++i){
-		if(*it) all0=false;
-		if(i==_a.point){ //odd
-			_out<<(*it)/10;
-			_out<<'.';
-			if(all0 && _a.point==1 &&_a.sigfig%2==1){
-				;
-			}else{
-				_out<<(*it)%10;
-			}
-			continue;
-		}
-		if(i==_a.point+1){ //even
-			_out<<'.';
-		}
-		if(*it<10) _out<<'0';
-		_out<<*it;
-	}
+	// INT i=1;
+	// if(!_a.ispositive) _out<<'-';
+	// bool all0=true;
+	 // 960.0123 -> 096.00123
+	// for(itu16 it=_a.seq.begin();it!=_a.seq.end();++it,++i,++i){
+		// if(*it) all0=false;
+		// if(i==_a.point){ //odd
+			// if((*it)/10 >0) _out<<(*it)/10;
+			// if(all0 && _a.point==1 &&_a.sigfig%2==1){
+				// _out<<"0.";
+			// }else{
+				// _out<<'.';
+				// _out<<(*it)%10;
+			// }
+			// continue;
+		// }
+		// if(i==_a.point+1){ //even
+			// _out<<'.';
+		// }
+		// if(*it<10) _out<<'0';
+		// _out<<*it;
+	// }
 	return _out;
 } ;
 std::istream& operator >> (std::istream& _in, Num & _a){
