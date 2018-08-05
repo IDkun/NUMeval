@@ -129,6 +129,12 @@ Num::~Num(){};
 // Num Num::operator - (Num const& _a, Num const& _b);
 // Num Num::operator * (Num const& _a, Num const& _b);
 // Num Num::operator / (Num const& _a, Num const& _b);
+
+/*
+TEST SAMPLES:
+1 -1 0.1 0.0001 0.00001 960.0123 960.01234
+
+*/
 std::ostream& operator << (std::ostream &_out, Num const &_a){
 	if(!_a.ispositive) _out<<'-';
 	itu16 it=_a.seq.begin();
