@@ -16,6 +16,7 @@
 
 Num::Num(){
 	sigfig=1;
+	point=-1;
 	power=0;
 	ispositive=true;
 	prear=seq.end();
@@ -23,6 +24,7 @@ Num::Num(){
 Num::Num(short i):Num(int(i)) {};
 Num::Num(int i):Num(){
 	if(i<0) ispositive=false;
+	point=-1;
 	seq.push_back(i);
 	sigfig=1;
 	power=0;
@@ -44,21 +46,81 @@ Num::Num(double d){
 Num::Num(char *s){
 	Build(s);
 };
+
+void Num::Clear(){
+	seq.clear();
+	sigfig=1;
+	point=-1;
+	power=0;
+	ispositive=true;
+	prear=seq.end();
+};
 void Num::Build(char *s){
-	// if(!*s) Clear();
-	if(*s=='-') ispositive=false;
-	char *p1=s,*p2=s;
-	p2=s+strlen(s)-1;
-	char *p=0;
-	for(p=p2;p-p1>1;--p,--p){
-		u16 t=*p-'0'+10*(*(p-1)-'0');
-		seq.push_back(t);
+	Clear();
+	if(*s=='-') {ispositive=false;++s;}
+	char *p1=s,*p2,*p3;
+	p3=s+strlen(s)-1;
+	p2=strchr(s,'.');
+	sigfig=p3-p1+1;
+	if(p2){
+		point=p2-p1;
+		power=point-1;
+		sigfig--;
+	}else{
+		point=-1;
+		power=p3-p1;
 	}
-	if(p-p1>0){
-		seq.push_back(*p-'0'+10*(*(p-1)-'0'));
+	char *p=p3;
+	// int..
+	{
+	// // p2==0 ,and go in integer way.
+	// for(p=p2;p-p1>1;--p,--p){
+		// u16 t,t1,t2;
+		// t1=*p-'0';
+		// t2=*(p-1)-'0';
+		// t=t1+10*t2;
+		// seq.push_back(t);
+	// }
+	// if(p-p1>0){
+		// seq.push_back(*p-'0'+10*(*(p-1)-'0'));
+	// }
+	// else{
+		// seq.push_back(*p-'0');
+	// } //just for long integer
 	}
-	else{
-		seq.push_back(*p-'0');
+	u16 t1=0,t2=0;
+	bool isodd_digit=true;
+	
+	do{
+		if(p==p2){
+			--p;
+			continue;
+		}
+		
+		if(isodd_digit){
+			t1=*p-'0';
+		}else{
+			t2=*p-'0';
+		}
+		if(!isodd_digit){
+			seq.push_back(t1+10*t2);
+			t1=0;t2=0;
+		}
+		
+		if(p!=p1){
+		--p;
+		isodd_digit=!isodd_digit;
+		}
+	} while(p!=p1);
+	// p==p1 highest digit:
+	if(p==p1){
+		if(isodd_digit){
+			t1=*p-'0';
+		}else{
+			t2=*p-'0';
+		}
+		seq.push_back(t1+10*t2);
+		t1=0;t2=0;
 	}
 	
 	std::reverse(seq.begin(),seq.end());
@@ -74,8 +136,11 @@ Num::~Num(){};
 // Num Num::operator * (Num const& _a, Num const& _b);
 // Num Num::operator / (Num const& _a, Num const& _b);
 std::ostream& operator << (std::ostream &_out, Num const &_a){
-	for(itu16 it=_a.seq.begin();it!=_a.seq.end();++it){
+	INT i=1;
+	if(!_a.ispositive) _out<<'-';
+	for(itu16 it=_a.seq.begin();it!=_a.seq.end();++it,++i){
 		_out<<*it;
+		if(i==_a.point) _out<<'.';
 	}
 	return _out;
 } ;

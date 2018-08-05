@@ -2,8 +2,8 @@
 *.d
 
 #logs
-log
-log/*.*
+logs
+logs/*.*
 
 # Compiled Object files
 *.slo

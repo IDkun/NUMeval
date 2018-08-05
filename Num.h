@@ -28,6 +28,7 @@ private:
 	big end first.
 	*/
 	INT power /*科学记数法中的位数*/,
+		point /*小数点出现在高位起第几个有效数字的后面*/,
 		sigfig /*有效数字的位数,also length*/;
 	bool ispositive; /*for positive*/
 	itu16 prear;/*最后一位有效数字所在的地址,length-1*/
@@ -43,7 +44,9 @@ public:
 
 	~Num();
 
+	void Clear();
 	void Build(char *s);
+	
 	friend Num operator + (Num const& _a, Num const& _b);
 	friend Num operator - (Num const& _a, Num const& _b);
 	friend Num operator * (Num const& _a, Num const& _b);
