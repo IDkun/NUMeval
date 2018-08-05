@@ -46,6 +46,7 @@ public:
 
 	void Clear();
 	void Build(char *s);
+	void show_status();
 	
 	friend Num operator + (Num const& _a, Num const& _b);
 	friend Num operator - (Num const& _a, Num const& _b);

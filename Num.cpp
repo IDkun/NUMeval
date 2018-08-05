@@ -127,6 +127,16 @@ void Num::Build(char *s){
 	prear=seq.end();
 };
 
+void Num::show_status(){
+	for(itu16 it=seq.begin();it!=seq.end();++it){
+		std::cout<<*it<<'\t';
+	}
+	std::cout<<" sigfig : "<<sigfig
+	<<" point : "<<point
+	<<" power : "<<power
+	<<" ispositive : "<<ispositive
+	<<std::endl;
+}
 
 Num::~Num(){};
 
@@ -138,9 +148,25 @@ Num::~Num(){};
 std::ostream& operator << (std::ostream &_out, Num const &_a){
 	INT i=1;
 	if(!_a.ispositive) _out<<'-';
-	for(itu16 it=_a.seq.begin();it!=_a.seq.end();++it,++i){
+	bool all0=true;
+	
+	for(itu16 it=_a.seq.begin();it!=_a.seq.end();++it,++i,++i){
+		if(*it) all0=false;
+		if(i==_a.point){ //odd
+			_out<<(*it)/10;
+			_out<<'.';
+			if(all0 && _a.point==1 &&_a.sigfig%2==1){
+				;
+			}else{
+				_out<<(*it)%10;
+			}
+			continue;
+		}
+		if(i==_a.point+1){ //even
+			_out<<'.';
+		}
+		if(*it<10) _out<<'0';
 		_out<<*it;
-		if(i==_a.point) _out<<'.';
 	}
 	return _out;
 } ;
