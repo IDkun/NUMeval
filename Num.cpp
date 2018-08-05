@@ -5,6 +5,7 @@
 //header
 #include "Num.h"
 #include <cstdio>
+#include <cstring>
 #include <algorithm>
 #include <assert.h>
 
@@ -43,8 +44,25 @@ Num::Num(double d){
 Num::Num(char *s){
 	Build(s);
 };
-void Build(char *s){
-	;
+void Num::Build(char *s){
+	// if(!*s) Clear();
+	if(*s=='-') ispositive=false;
+	char *p1=s,*p2=s;
+	p2=s+strlen(s)-1;
+	char *p=0;
+	for(p=p2;p-p1>1;--p,--p){
+		u16 t=atoi(p)+10*atoi(p-1);
+		seq.push_back(t);
+	}
+	if(p-p1>0){
+		seq.push_back(atoi(p)+10*atoi(p-1));
+	}
+	else{
+		seq.push_back(atoi(p));
+	}
+	
+	std::reverse(seq.begin(),seq.end());
+	prear=seq.end();
 };
 
 
