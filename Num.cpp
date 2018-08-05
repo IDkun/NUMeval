@@ -41,8 +41,12 @@ Num::Num(double d){
 	Num(tmps);
 };
 Num::Num(char *s){
+	Build(s);
+};
+void Build(char *s){
 	;
 };
+
 
 Num::~Num(){};
 
@@ -51,15 +55,17 @@ Num::~Num(){};
 // Num Num::operator - (Num const& _a, Num const& _b);
 // Num Num::operator * (Num const& _a, Num const& _b);
 // Num Num::operator / (Num const& _a, Num const& _b);
-// std::ostream operator << (std::ostream& _out, Num const& _a){
-	// u16 n;
-	// for(itu16 it=_a.seq.begin();it!=_a.seq.end();++it){
-		// n=(*it);
-		// _out<<n;
-	// }
-	// return _out;
-// } ;
-// std::istream operator >> (std::istream& _in, Num const& _a);
+std::ostream& operator << (std::ostream &_out, Num const &_a){
+	for(itu16 it=_a.seq.begin();it!=_a.seq.end();++it){
+		_out<<*it;
+	}
+	return _out;
+} ;
+std::istream& operator >> (std::istream& _in, Num & _a){
+	_in>>tmps;
+	_a.Build(tmps);
+	return _in;
+};
 
 
 
