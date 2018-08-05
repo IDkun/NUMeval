@@ -1,6 +1,10 @@
 # Prerequisites
 *.d
 
+#logs
+log
+log/*.*
+
 # Compiled Object files
 *.slo
 *.lo

@@ -51,14 +51,14 @@ void Num::Build(char *s){
 	p2=s+strlen(s)-1;
 	char *p=0;
 	for(p=p2;p-p1>1;--p,--p){
-		u16 t=atoi(p)+10*atoi(p-1);
+		u16 t=*p-'0'+10*(*(p-1)-'0');
 		seq.push_back(t);
 	}
 	if(p-p1>0){
-		seq.push_back(atoi(p)+10*atoi(p-1));
+		seq.push_back(*p-'0'+10*(*(p-1)-'0'));
 	}
 	else{
-		seq.push_back(atoi(p));
+		seq.push_back(*p-'0');
 	}
 	
 	std::reverse(seq.begin(),seq.end());
