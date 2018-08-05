@@ -71,23 +71,7 @@ void Num::Build(char *s){
 		power=p3-p1;
 	}
 	char *p=p3;
-	// int..
-	{
-	// // p2==0 ,and go in integer way.
-	// for(p=p2;p-p1>1;--p,--p){
-		// u16 t,t1,t2;
-		// t1=*p-'0';
-		// t2=*(p-1)-'0';
-		// t=t1+10*t2;
-		// seq.push_back(t);
-	// }
-	// if(p-p1>0){
-		// seq.push_back(*p-'0'+10*(*(p-1)-'0'));
-	// }
-	// else{
-		// seq.push_back(*p-'0');
-	// } //just for long integer
-	}
+	
 	u16 t1=0,t2=0;
 	bool isodd_digit=true;
 	
@@ -146,28 +130,68 @@ Num::~Num(){};
 // Num Num::operator * (Num const& _a, Num const& _b);
 // Num Num::operator / (Num const& _a, Num const& _b);
 std::ostream& operator << (std::ostream &_out, Num const &_a){
-	// INT i=1;
-	// if(!_a.ispositive) _out<<'-';
-	// bool all0=true;
-	 // 960.0123 -> 096.00123
-	// for(itu16 it=_a.seq.begin();it!=_a.seq.end();++it,++i,++i){
-		// if(*it) all0=false;
-		// if(i==_a.point){ //odd
-			// if((*it)/10 >0) _out<<(*it)/10;
-			// if(all0 && _a.point==1 &&_a.sigfig%2==1){
-				// _out<<"0.";
-			// }else{
-				// _out<<'.';
-				// _out<<(*it)%10;
-			// }
-			// continue;
-		// }
-		// if(i==_a.point+1){ //even
-			// _out<<'.';
-		// }
-		// if(*it<10) _out<<'0';
-		// _out<<*it;
-	// }
+	if(!_a.ispositive) _out<<'-';
+	itu16 it=_a.seq.begin();
+	bool all0=true,beforep=true;
+	INT i=1;
+	
+	// 0.xx or 0.xxx at front 
+	if(_a.seq.front()==0) {
+		_out<<'0';
+		i=2;
+		++it;
+		assert(_a.point==1);
+		_out<<'.';
+		if(_a.sigfig%2==0){
+			_out<<'0';
+			i=3;
+		}
+		beforep=false;
+	}
+	else if(_a.sigfig >_a.power && _a.seq.front()<10){
+		if(_a.point==1)
+		{
+			_out<<"0.";beforep=false;
+		}
+		_out<<_a.seq.front();
+		++it;
+		i=2;
+		all0=false;
+	}
+	
+	// i begin from 1 or , 2 or 3
+	for(;it!=_a.seq.end();++it){
+		u16 t1,t2;
+		
+		t1=*it%10;
+		t2=*it/10;
+		
+		//t2
+		if(t2) all0=false;
+		if(!(beforep && all0)){
+			_out<<t2;
+		}
+		
+		if(i==_a.point) {
+			_out<<'.';
+			beforep=false;
+		}
+		
+		++i;
+		//t1
+		if(t1) all0=false;
+		if(!(beforep && all0)){
+			_out<<t1;
+		}
+		
+		
+		if(i==_a.point) {
+			_out<<'.';
+			beforep=false;
+		}
+		
+		++i;
+	}
 	return _out;
 } ;
 std::istream& operator >> (std::istream& _in, Num & _a){
